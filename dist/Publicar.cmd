@@ -1,0 +1,1 @@
+aws s3 sync C:\Users\Administrator\SiteMF s3://laura.marcosfaerman.jor.br --exclude="*.pdf"

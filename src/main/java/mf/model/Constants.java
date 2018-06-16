@@ -1,0 +1,98 @@
+package mf.model;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+
+public interface Constants {
+	public static final String D01 = "D01";
+	public static final String D02 = "D02";
+	public static final String D03 = "D03";
+	public static final String D04 = "D04";
+	public static final String D05 = "D05";
+	public static final String D06 = "D06";
+	public static final String D07 = "D07";
+	public static final String D08 = "D08";
+	public static final String D09 = "D09";
+	public static final String D10 = "D10";
+	public static final String D11 = "D11";
+	public static final String D12 = "D12";
+	public static final String D13 = "D13";
+	public static final String D14 = "D14";
+	public static final String D15 = "D15";
+	public static final String D16 = "D16";
+	public static final String D17 = "D17";
+	public static final String D18 = "D18";
+	public static final String D19 = "D19";
+	public static final String D20 = "D20";
+	public static final String D21 = "D21";
+	public static final String D22 = "D22";
+	public static final String D23 = "D23";
+	public static final String D24 = "D24";
+	public static final String D25 = "D25";
+	public static final String D26 = "D26";
+	public static final String D27 = "D27";
+	public static final String D28 = "D28";
+	public static final String D29 = "D29";
+	public static final String D30 = "D30";
+	public static final String D31 = "D31";
+	public static final String D32 = "D32";
+	public static final String D33 = "D33";
+	public static final String D34 = "D34";
+	public static final String D35 = "D35";
+	public static final String D36 = "D36";
+	public static final String D37 = "D37";
+	public static final String D38 = "D38";
+	public static final String D39 = "D39";
+	public static final String D40 = "D40";
+	public static final String D41 = "D41";
+	public static final String D42 = "D42";
+	public static final String D43 = "D43";
+	public static final String D44 = "D44";
+	public static final String D45 = "D45";
+	public static final String D46 = "D46";
+	public static final String D47 = "D47";
+	public static final String D48 = "D48";
+	public static final String D49 = "D49";
+	public static final String D50 = "D50";
+	public static final String D51 = "D51";
+	public static final String D52 = "D52";
+	public static final String D53 = "D53";
+	public static final String D54 = "D54";
+	public static final String D55 = "D55";
+	public static final String D56 = "D56";
+	public static final String D57 = "D57";
+	public static final String D58 = "D58";
+	public static final String D59 = "D59";
+	public static final String D60 = "D60";
+	public static final String D61 = "D61";
+	public static final String D62 = "D62";
+	public static final String D63 = "D63";
+	public static final String D64 = "D64";
+	public static final String D65 = "D65";
+	public static final String D66 = "D66";
+	public static final String D67 = "D67";
+	public static final String D68 = "D68";
+	public static final String D69 = "D69";
+	public static final String D70 = "D70";	
+	public static final String T0 = "T0";
+	public static final String T1 = "T1";
+	public static final String T2 = "T2";
+	public static final String T3 = "T3";
+	
+	public static final String SMALL = "small";
+	public static final String MEDIUM = "medium";
+	public static final String LARGE = "large";
+	
+	public static final String T_HEIGHT = "246";
+	public static final String T1_WIDTH = "562";
+	public static final String T2_WIDTH = "371";
+	public static final String T3_WIDTH = "180";
+	
+	public static final String DATEFMT = "YYYY-MM-dd HH:mm:ss";
+	public static final DateFormat df = new SimpleDateFormat(DATEFMT);
+	public static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Brazil/East");
+
+	public static final boolean DEBUG = true;
+	public static final boolean LIVE = false;
+}
