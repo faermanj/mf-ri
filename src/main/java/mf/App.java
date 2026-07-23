@@ -74,7 +74,12 @@ public class App {
 		}
 		*/
 		if (result == null) {
-			result = lookupFromHome("src/MF/mf-ri/ConteudoSite");
+			// Content lives at <MF>/ConteudoSite, code at <MF>/Codigo/mf-ri,
+			// so from the working dir the content is two levels up.
+			result = lookupFromWorkingDir("../../ConteudoSite");
+		}
+		if (result == null) {
+			result = lookupFromHome("src/MF/ConteudoSite");
 		}
 		if (result == null) {
 			logger.severe("Could not find ingest dir.");
@@ -86,6 +91,18 @@ public class App {
 		return result;
 	}
 	
+	static private Path lookupFromWorkingDir(String dir){
+		Path resolve = Paths.get(dir).toAbsolutePath().normalize();
+		File file = resolve.toFile();
+		if(file.exists() && file.isDirectory()){
+			logger.warning("Content found at ["+resolve+"]");
+			return resolve;
+		}else {
+			logger.info("Content not found at ["+resolve+"]");
+			return null;
+		}
+	}
+
 	static private Path lookupFromHome(String dir){
 		Path resolve = HOME_P.resolve(dir);
 		File file = resolve.toFile();

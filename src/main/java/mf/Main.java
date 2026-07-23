@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class Main {
 
 	public static void main(String[] args) {
-		String ingestDir = "ConteudoSite";
+		String ingestDir = "../../ConteudoSite";
 		String outgestDir = System.getProperty("user.home") + File.separator + "SiteMF";
 
 		//execute(ingestDir, outgestDir);
