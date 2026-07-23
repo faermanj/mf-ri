@@ -194,7 +194,7 @@ public class WatchDir {
     }
  
     public static void main(String[] args) throws IOException {
-    	Path dir = Paths.get("../ConteudoSite");
+    	Path dir = Paths.get("ConteudoSite");
         new WatchDir(dir, true,null).processEvents();
     }
 }

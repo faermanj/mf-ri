@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  ACM certificate for marcosfaerman.com.br and marcosfaerman.jor.br
+  (apex and wildcard). Kept in its own stack so the site stack can be
+  torn down or recreated without re-validating the certificate.
+  NOTE: must be deployed in us-east-1 - CloudFront requires ACM
+  certificates from that region.
+
+Resources:
+  Certificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: marcosfaerman.com.br
+      SubjectAlternativeNames:
+        - "*.marcosfaerman.com.br"
+        - marcosfaerman.jor.br
+        - "*.marcosfaerman.jor.br"
+      ValidationMethod: DNS
+      # Validation CNAME records must be created in the DNS zone of each
+      # domain. Stack creation will pause on this resource until both
+      # domains are validated.
+
+Outputs:
+  CertificateArn:
+    Description: ACM certificate ARN - pass to the site stack
+    Value: !Ref Certificate

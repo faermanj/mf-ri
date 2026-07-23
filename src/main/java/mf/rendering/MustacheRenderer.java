@@ -182,6 +182,7 @@ public class MustacheRenderer extends Visitor implements Constants {
 			homeWriter.close();
 			count.incrementAndGet();
 		} catch (IOException ex) {
+			ex.printStackTrace();
 			throw new RuntimeException(ex);
 		}
 	}

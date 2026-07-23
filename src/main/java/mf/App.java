@@ -56,6 +56,7 @@ public class App {
 
 	static private Path findIngestDir() {
 		Path result = null;	
+		/*
 		if (result == null) {
 			result = lookupFromHome("Google Drive/SharedDrive/ConteudoSite");
 		}
@@ -70,6 +71,10 @@ public class App {
 		}
 		if(result == null){
 			result = lookupFromJar();
+		}
+		*/
+		if (result == null) {
+			result = lookupFromHome("src/MF/mf-ri/ConteudoSite");
 		}
 		if (result == null) {
 			logger.severe("Could not find ingest dir.");
@@ -99,7 +104,7 @@ public class App {
 		try {
 			URI jarURI = GerarSite.class.getProtectionDomain().getCodeSource().getLocation().toURI();
 			File jarFile = new File(jarURI);
-			Path ingestDir = jarFile.toPath().getParent().resolve("../../ConteudoSite");
+			Path ingestDir = jarFile.toPath().getParent().resolve("../ConteudoSite");
 			if(isMFDir(ingestDir)) return ingestDir;
 		} catch (Exception e) {
 			logger.warning(e.getMessage());

@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  Static site hosting for marcosfaerman.com.br and marcosfaerman.jor.br:
+  private S3 bucket and CloudFront distribution (with Origin Access
+  Control). The ACM certificate lives in its own stack
+  (certificate.cform.yaml) and is passed in as a parameter.
+  NOTE: must be deployed in us-east-1 - CloudFront requires ACM
+  certificates from that region.
+
+Parameters:
+  CertificateArn:
+    Type: String
+    Description: ARN of the ACM certificate (output of the certificate stack). Must be in us-east-1.
+    AllowedPattern: "arn:aws:acm:us-east-1:.+"
+  PriceClass:
+    Type: String
+    Description: CloudFront price class. PriceClass_All includes South America edge locations.
+    Default: PriceClass_All
+    AllowedValues:
+      - PriceClass_100
+      - PriceClass_200
+      - PriceClass_All
+
+Resources:
+  ContentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: "marcosfaerman-712151682816"
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  ContentBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ContentBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipal
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub "${ContentBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}"
+
+  OriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${AWS::StackName}-oac"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: !Sub "${AWS::StackName} static content"
+        Aliases:
+          - marcosfaerman.com.br
+          - "*.marcosfaerman.com.br"
+          - marcosfaerman.jor.br
+          - "*.marcosfaerman.jor.br"
+        DefaultRootObject: index.html
+        HttpVersion: http2and3
+        IPV6Enabled: true
+        PriceClass: !Ref PriceClass
+        Origins:
+          - Id: s3-content
+            DomainName: !GetAtt ContentBucket.RegionalDomainName
+            OriginAccessControlId: !Ref OriginAccessControl
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+        DefaultCacheBehavior:
+          TargetOriginId: s3-content
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+            - OPTIONS
+          Compress: true
+          # Managed cache policy: CachingOptimized
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+        ViewerCertificate:
+          AcmCertificateArn: !Ref CertificateArn
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
+
+Outputs:
+  BucketName:
+    Description: S3 bucket for static content
+    Value: !Ref ContentBucket
+  DistributionId:
+    Description: CloudFront distribution id
+    Value: !Ref Distribution
+  DistributionDomainName:
+    Description: CloudFront domain - point DNS records for all four domains here
+    Value: !GetAtt Distribution.DomainName
